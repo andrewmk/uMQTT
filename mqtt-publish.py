@@ -1,15 +1,18 @@
 def mtStr(s):
-  return str.fromCharCode(s.length>>8,s.length&255)+s
+  return int.to_bytes(s.length >> 8) + int.to_bytes(s.length & 255) + s
 
 def mtPacket(cmd, variable, payload):
-  return str.fromCharCode(cmd, variable.length+payload.length)+variable+payload
+  return int.to_bytes(cmd) + int.to_bytes(variable.length + payload.length) + variable + payload
 
 def mtpConnect(name):
-  return mtPacket(0b00010000,
-           mtStr("MQTT")/*protocol name*/+
-           "\x04"/*protocol level*/+
-           "\x00"/*connect flag*/+
-           "\xFF\xFF"/*Keepalive*/, mtStr(name))
+  return mtPacket(
+           0b00010000,
+           mtStr("MQTT")  /*protocol name*/+
+           b'\x04'        /*protocol level*/+
+           b'\x00'        /*connect flag*/+
+           b'\xFF\xFF'    /*Keepalive*/
+           , mtStr(name)
+  )
 
 def mtpPub(topic, data):
   return  mtPacket(0b00110001, mtStr(topic), data)
