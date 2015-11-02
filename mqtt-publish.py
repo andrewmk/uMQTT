@@ -16,12 +16,9 @@ def mtpPub(topic, data):
 
 # For CC3000 WiFi
 var wlan = require("CC3000").connect()
-wlan.connect( "BTHub4-5ZN2", "2f3b5659ad", def (s) {
-  if s=="dhcp":
-    print("My IP is "+wlan.getIP().ip)
-    onConnected()
-
-})
+wlan.connect( "BTHub4-5ZN2", "2f3b5659ad")
+if s=="dhcp":
+  print("My IP is "+wlan.getIP().ip)
 
 var client
 print('creating client')
