@@ -31,7 +31,7 @@ print('client connecting')
 client.write(mtpConnect("Espruino"))
 
 print("Publishing")
-client.write(mtpPub(b'topic/subtopic', b'my-data'))
+client.write(mtpPub("topic/subtopic", b'my-data'))
 
 #client.on('data',
 #  print("[MQTT]"+ubinascii.hexlify(data))
