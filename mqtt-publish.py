@@ -21,19 +21,19 @@ def mtpPub(topic, data):
 var client
 def onConnected():
   print('creating client')
-  client = require("net").connect({host : "192.168.1.50", port: 1883}, def() { //'connect' listener
+  client = require("net").connect({host : "192.168.1.50", port: 1883}, /*def()*/ { //'connect' listener
     print('client connected')
     client.write(mtpConnect("Espruino"))
 
-    var intr = setInterval(def():
+    var intr = setInterval(/*def():*/
       print("Publishing")
       client.write(mtpPub("a/b", E.getTemperature().toFixed(4)))
     , 2000)
 
-    client.on('data', def(data):
+    client.on('data', /*def(data):*/
       print("[MQTT]"+data.split("").map(def(c) { return c.charCodeAt(0); }))
     })
-    client.on('end', def():
+    client.on('end', /*def():*/
       print('client disconnected')
       clearInterval(intr)
     )
