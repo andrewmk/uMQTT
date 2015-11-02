@@ -14,6 +14,9 @@ def mtpConnect(name):
            mtStr(name)
   )
 
+def mtpDisconnect():
+  return bytes([0b11100000, 0b00000000])
+
 def mtpPub(topic, data):
   return  mtPacket(0b00110001, mtStr(topic), data)
 
@@ -28,10 +31,13 @@ print('creating client')
 client = require("net").connect({host : "192.168.1.50", port: 1883})
 
 print('client connecting')
-client.write(mtpConnect("Espruino"))
+client.write(mtpConnect("WiPy1"))
 
 print("Publishing")
 client.write(mtpPub("topic/subtopic", b'my-data'))
+
+print('client disconnecting')
+client.write(mtpDisconnect())
 
 #client.on('data',
 #  print("[MQTT]"+ubinascii.hexlify(data))
