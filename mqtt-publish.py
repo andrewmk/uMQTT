@@ -1,9 +1,9 @@
 def mtStr(s):
-  return int.to_bytes(s.length >> 8) + int.to_bytes(s.length & 255) + s.encode('utf-8')
+  return int.to_bytes(len(s) >> 8, 1) + int.to_bytes(len(s) & 255, 1) + s.encode('utf-8')
 
 def mtPacket(cmd, variable, payload):
   return
-    int.to_bytes(cmd) + int.to_bytes(variable.length + payload.length) + 
+    int.to_bytes(cmd, 1) + int.to_bytes(len(variable) + len(payload), 1) + 
     variable.encode('utf-8') + payload.encode('utf-8')
 
 def mtpConnect(name):
