@@ -20,24 +20,20 @@ def mtpDisconnect():
 def mtpPub(topic, data):
   return  mtPacket(0b00110001, mtStr(topic), data)
 
-# For CC3000 WiFi
-var wlan = require("CC3000").connect()
-wlan.connect( "BTHub4-5ZN2", "2f3b5659ad")
-if s=="dhcp":
-  print("My IP is "+wlan.getIP().ip)
+import socket
+addr = socket.getaddrinfo("mqttbroker.com", 1883)[0][4]
+s = socket.socket()
 
-var client
-print('creating client')
-client = require("net").connect({host : "192.168.1.50", port: 1883})
+print('Connecting...')
+s.connect(addr)
+s.send(mtpConnect("WiPy1"))
 
-print('client connecting')
-client.write(mtpConnect("WiPy1"))
+print("Publishing...")
+s.send(mtpPub("topic/subtopic", b'my-data'))
 
-print("Publishing")
-client.write(mtpPub("topic/subtopic", b'my-data'))
-
-print('client disconnecting')
-client.write(mtpDisconnect())
+print('Disconnecting...')
+s.send(mtpDisconnect())
+s.close()
 
 #client.on('data',
 #  print("[MQTT]"+ubinascii.hexlify(data))
