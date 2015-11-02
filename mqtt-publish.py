@@ -7,11 +7,11 @@ def mtPacket(cmd, variable, payload):
 def mtpConnect(name):
   return mtPacket(
            0b00010000,
-           mtStr("MQTT")  /*protocol name*/+
-           b'\x04'        /*protocol level*/+
-           b'\x00'        /*connect flag*/+
-           b'\xFF\xFF'    /*Keepalive*/
-           , mtStr(name)
+           mtStr("MQTT")  /*protocol name*/ +
+           b'\x04'        /*protocol level*/ +
+           b'\x00'        /*connect flag*/ +
+           b'\xFF\xFF',   /*Keepalive*/
+           mtStr(name)
   )
 
 def mtpPub(topic, data):
