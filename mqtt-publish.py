@@ -1,10 +1,8 @@
 def mtStr(s):
-  return int.to_bytes(len(s) >> 8, 1) + int.to_bytes(len(s) & 255, 1) + s.encode('utf-8')
+  return bytes([len(s) >> 8, len(s) & 255]) + s.encode('utf-8')
 
 def mtPacket(cmd, variable, payload):
-  return
-    int.to_bytes(cmd, 1) + int.to_bytes(len(variable) + len(payload), 1) + 
-    variable.encode('utf-8') + payload.encode('utf-8')
+  return bytes([cmd, len(variable) + len(payload)]) + variable + payload
 
 def mtpConnect(name):
   return mtPacket(
@@ -29,19 +27,17 @@ var client
 print('creating client')
 client = require("net").connect({host : "192.168.1.50", port: 1883})
 
-print('client connected')
+print('client connecting')
 client.write(mtpConnect("Espruino"))
 
-intr = setInterval(
-  print("Publishing")
-  client.write(mtpPub("a/b", E.getTemperature().toFixed(4)))
-, 2000)
+print("Publishing")
+client.write(mtpPub(b'topic/subtopic', b'my-data'))
 
-client.on('data',
-  print("[MQTT]"+ubinascii.hexlify(data))
-)
-
-client.on('end', 
-  print('client disconnected')
-  clearInterval(intr)
-)
+#client.on('data',
+#  print("[MQTT]"+ubinascii.hexlify(data))
+#)
+#
+#client.on('end', 
+#  print('client disconnected')
+#  clearInterval(intr)
+#)
